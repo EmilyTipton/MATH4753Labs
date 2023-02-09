@@ -11,6 +11,28 @@ output:
 
 # Task 1
 ```{r}
-
+getwd()
 ```
+
+## Task 2
+
+```{r}
+spruce <- read.csv("SPRUCE.csv")
+tail(spruce)
+```
+
+## Task 3
+
+### Create a scatter plot
+
+```{r}
+library(s20x)
+
+scatt = trendscatter(data = spruce, Height~BHDiameter, f = 0.5, main = "f=0.5")
+scatt
+```
+
+
+
+
 
