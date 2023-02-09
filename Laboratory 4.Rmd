@@ -28,9 +28,67 @@ tail(spruce)
 ```{r}
 library(s20x)
 
-scatt = trendscatter(data = spruce, Height~BHDiameter, f = 0.5, main = "f=0.5")
-scatt
+trendscatter(data = spruce, Height~BHDiameter, f = 0.5, main = "f=0.5")
 ```
+
+### Make a linear model object
+
+```{r}
+spruce_lm=with(spruce,lm(Height~BHDiameter))
+```
+
+### Find residuals
+
+```{r}
+height_res = residuals(spruce_lm)
+height_res
+```
+
+### Find fitted values
+
+```{r}
+height_fit = fitted(spruce_lm)
+height_fit
+```
+
+### Plot residuals vs fitted values
+
+```{r}
+plot(height_fit, height_res, xlab = "Fitted values", ylab = "Residuals", main = "Residuals vs Fitted values", pch =21, bg = "pink", cex=1.2)
+```
+
+### Plot residuals vs fitted values using trendscatter()
+
+```{r}
+trendscatter(data = spruce_lm, height_res~height_fit, f = 0.5, main = "Residuals vs Fitted Values", xlab = "Fitted values", ylab = "Residuals")
+```
+
+### Describe the plot and compare
+
+The residuals vs fitted values trendscatter has a negative quadratic shape. There's a peak near the middle. The first trendscatter with the Height and BHDiameter data doesn't have a dramatic decrease after the peak. 
+
+### Make the residual plot using spruce_lm
+
+```{r}
+plot(spruce_lm, which = 1)
+```
+
+### Check normality
+
+```{r}
+normcheck(spruce_lm, shapiro.wilk = TRUE)
+```
+
+### P-value and NULL hypothesis
+
+P-value = 0.29
+If the p-value is < 0.05, we reject the NULL hypothesis. In this case, since our p-value = 0.29 > 0.05, we will accept the NULL hypothesis.
+
+### Conclusions
+
+Although we accept the NULL hypothesis based on the p-value, there's evidence to show that the straight line model is not the best fit for our data. The residuals vs fitted values plot show a quadratic curve, meaning a straight line model wouldn't be an appropriate choice. There's signal in the test when it should be noise, furthering the point that a straight line is not the best fit.
+
+
 
 
 
