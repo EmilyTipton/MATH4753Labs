@@ -114,7 +114,7 @@ quadplot = function(x) {
 
 curve(quadplot, lwd = 2, col = "deeppink3", add = TRUE)
 ```
-
+ 
 ### Vector of fitted values
 
 ```{r}
@@ -156,7 +156,7 @@ $\hat{\beta_{2}}$ = -0.027457
 ### Interval estimates
 
 ```{r}
-ciReg(quad_lm)
+confint(quad_lm)
 ```
 
 ### Equation of fitted line
@@ -260,6 +260,123 @@ MSS / TSS
 ```
 
 $R^2$ = MSS / TSS
+
+## Task 6
+
+### Unusual points
+
+```{r}
+library(s20x)
+cooks20x(quad_lm)
+```
+
+### Use of Cook's Distance
+
+A Cook's distance plot is used to show the influence of data points on the fitted values. The value of the distance takes into account both the Height and BHDiameter values. The longer the distance, the more influential the point is to the fit.  
+
+### Cook's with quadratic model
+
+In our case, the data point labelled 24 is very influential because it has the largest Cook's distance. The two points with the second and third most influence are points 18 and 21. This means that these particular points are skewing the data away from the fit. By removing these influential points, we can create a more accurate fit. 
+
+### quad2_lm with removed data points
+
+```{r}
+quad2_lm = lm(Height~BHDiameter + I(BHDiameter ^2), data=spruce[-c(18,21,24),])
+quad2_lm
+```
+
+### Summarize
+
+```{r}
+summary(quad2_lm)
+```
+
+### Compare
+
+```{r}
+summary(quad_lm)
+```
+
+### Conclusions
+
+The residual standard error measures how well the regression model fits the data. The lower the value, the better the fit. In our case, the residual standard error is lower with quad2_lm than quad1_lm. I noticed that removing the data points with the highest Cook's distance changed the intercept from a positive value to negative. 
+
+## Task 7
+
+### Proof
+
+Suppose line 1 and line 2 are written as:
+
+$$ L1: y = \beta_{0} + \beta_{1} x $$
+$$ L2: y = \beta_{0} + \delta + (\beta_{1} + \zeta)x $$
+
+The intersection of the two lines (the change point in the piecewise regression) would then be:
+
+$$ \beta_{0} + \beta_{1} x_{k} = \beta_{0} + \delta + (\beta_{1} + \zeta) x_{k} $$
+
+By reducing like terms, we have:
+
+$$ \delta = -\zeta x_{k} $$
+
+Substituting $\delta$ in L2:
+
+$$ y = \beta_{0} -\zeta x_{k} + (\beta_{1} + \zeta)x $$
+
+Rearranging
+
+$$ y = \beta_{0} + \beta_{1}x +\zeta (x - x_{k}) $$
+
+Therefore, L2 = L1 + adjustment term. 
+This implies that
+
+$$ y = \beta_{0} + \beta_{1}x +\zeta (x - x_{k})I(x > x_{k}) $$
+where I(x > $x_{k}$) = 1 when x > $x_{k}$ and 0 otherwise.
+
+### Recreate plot
+
+```{r}
+spruce2 =within(spruce, X<-(BHDiameter-20)*(BHDiameter>20))
+spruce2
+```
+
+```{r}
+lmp=lm(Height~BHDiameter + X,data=spruce2)
+tmp=summary(lmp)
+names(tmp)
+```
+```{r}
+myf = function(x,coef){
+  coef[1]+coef[2]*(x) + coef[3]*(x-18)*(x-18>0)
+}
+plot(spruce,main="Piecewise regression")
+myf(0, coef=tmp$coefficients[,"Estimate"])
+curve(myf(x,coef=tmp$coefficients[,"Estimate"] ),add=TRUE, lwd=2,col="deeppink3")
+abline(v=18)
+text(18,16,paste("R sq.=",round(tmp$r.squared,4) ))
+```
+
+## Task 8
+
+### Load package
+```{r}
+library(MATH4753tipt0010)
+```
+
+### Use function
+
+```{r}
+z(1:5)
+```
+
+### Explain
+
+The function I created takes a vector and returns the z values. The output is a list of the created z values and the given x values.
+
+
+
+
+
+
 
 
 
