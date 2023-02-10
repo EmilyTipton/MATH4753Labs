@@ -218,11 +218,17 @@ The value of $R^2$ in the current model is greater than the previous one.
 
 ### Adjusted $R^2$
 
-The adjusted $R^2$ value for the quad fit is 0.7604 and 0.6468 for the linear fit. 
+The adjusted $R^2$ value for the quad fit is 0.7604 and 0.6468 for the linear fit. It's beneficial to use an adjusted $R^2$ value because it provides a more precise observation of the correlation. The adjusted $R^2$ value takes into account the amount of independent variables that are added to the model. 
 
 ### (multiple $R^2$)
 
+In Lab 3 and 4, we've created regression models in order to predict the value of the Height of Spruce given a certain BHDiameter. We used a straight line fit for our first model and a quadratic fit for the second one. The conditions we set for each regression model contribute to the accuracy of our predictions. The value of multiple $R^2$ allows us to see how useful the predictor variables(specifically the straight line fit vs the quadratic fit) are at calculating the prediction of the Height.
+
+By calculating the proportion of the total number of squares explained by the model (MSS/TSS), we can see how many residuals are present in the model. As the $R^2$ value approaches 1, the number of residuals is decreased. In the case of our models, the $R^2$ value was greater for the quadratic fit, which means we have less residuals. This means that the quadratic fit is more accurate in predicting the Height than the linear fit. 
+
 ### Variability in Height
+
+The quadratic model explains the most variability in Height. This can be seen in the increase of the $R^2$ value from linear to quadratic. This value is determinant in how well the variation of BHDiameter explains the variation of Height. The larger the $R^2$ value, the better the model is at predicting the variation in Y based on the variation in X.
 
 ### anova
 
@@ -231,6 +237,7 @@ anova(spruce_lm)
 anova(quad_lm)
 ```
 
+The anova table shows that the amount of residuals decreased when we modeled the data with a quadratic fit rather than the linear fit. This is important because the lower number of residuals means that the fit is more accurate for predictions. 
 
 ### RSS, MSS, TSS, MSS / TSS
 
@@ -251,6 +258,8 @@ TSS
 ```{r}
 MSS / TSS
 ```
+
+$R^2$ = MSS / TSS
 
 
 

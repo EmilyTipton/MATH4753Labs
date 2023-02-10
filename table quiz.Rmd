@@ -1,0 +1,39 @@
+---
+title: "quiz7"
+author: "Emily Tipton"
+date: "`r Sys.Date()`"
+output: html_document
+---
+```{r}
+seed <- read.csv("SEEDLING.csv")
+head(seed)
+```
+
+```{r}
+
+tab <- table(seed$Abundance, seed$Type)
+addtab <- addmargins(tab)
+addtab
+```
+
+```{r}
+51 / 73
+```
+
+```{r}
+round(51 / 73, 4)
+```
+
+```{r}
+round(14 / 51, 4)
+```
+
+```{r}
+(5 + 2 + 10 + 33) / 73
+```
+
+```{r}
+14 / 73
+round()
+```
+
