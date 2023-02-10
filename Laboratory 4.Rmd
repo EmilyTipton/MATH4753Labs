@@ -54,7 +54,7 @@ height_fit
 ### Plot residuals vs fitted values
 
 ```{r}
-plot(height_fit, height_res, xlab = "Fitted values", ylab = "Residuals", main = "Residuals vs Fitted values", pch =21, bg = "pink", cex=1.2)
+plot(height_fit, height_res, xlab = "Fitted values", ylab = "Residuals", main = "Residuals vs Fitted values", pch =21, bg = "pink", cex = 1.2)
 ```
 
 ### Plot residuals vs fitted values using trendscatter()
@@ -70,7 +70,7 @@ The residuals vs fitted values trendscatter has a negative quadratic shape. Ther
 ### Make the residual plot using spruce_lm
 
 ```{r}
-plot(spruce_lm, which = 1)
+plot(spruce_lm, which = 1, pch = 21, bg = "black")
 ```
 
 ### Check normality
@@ -88,9 +88,53 @@ If the p-value is < 0.05, we reject the NULL hypothesis. In this case, since our
 
 Although we accept the NULL hypothesis based on the p-value, there's evidence to show that the straight line model is not the best fit for our data. The residuals vs fitted values plot show a quadratic curve, meaning a straight line model wouldn't be an appropriate choice. There's signal in the test when it should be noise, furthering the point that a straight line is not the best fit.
 
+## Task 4
+
+### Fit a quadratic
+
+```{r}
+quad_lm = lm(Height~BHDiameter + I(BHDiameter ^2), data=spruce)
+
+summary(quad_lm)
+```
+
+### Scatter plot with quadratic curve
+
+```{r}
+coef(quad_lm)
+```
 
 
+```{r}
+plot(spruce, main = "Height vs BHDiameter", pch =21, bg = "black")
 
+quadplot = function(x) {
+  quad_lm$coefficients[1] + quad_lm$coefficients[2] * x + quad_lm$coefficients[3] * x ^2
+}
 
+curve(quadplot, lwd = 2, col = "deeppink3", add = TRUE)
+```
+
+### Vector of fitted values
+
+```{r}
+quad_fit = fitted(quad_lm)
+```
+
+### Residuals vs Fitted values from quad_lm
+
+```{r}
+plot(quad_lm, which = 1, pch = 21, bg = "black")
+```
+
+### Check normality
+
+```{r}
+normcheck(quad_lm, shapiro.wilk = TRUE)
+```
+
+### Conclusions
+
+The P-value is 0.684 which is larger than the P-value from our previous Shapiro-Wilk normality check. This means that the quadratic curve that we fit to our data is more accurate than the straight line. There is significantly less signal which is what we were aiming for. 
 
 
