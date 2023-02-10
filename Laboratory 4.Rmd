@@ -135,6 +135,123 @@ normcheck(quad_lm, shapiro.wilk = TRUE)
 
 ### Conclusions
 
-The P-value is 0.684 which is larger than the P-value from our previous Shapiro-Wilk normality check. This means that the quadratic curve that we fit to our data is more accurate than the straight line. There is significantly less signal which is what we were aiming for. 
+The P-value is 0.684 which is larger than the P-value from our previous Shapiro-Wilk normality check. This means that the quadratic curve that we fit to our data is more accurate than the straight line. There is significantly less signal which is what we were aiming for. The shape from our normality check is much more symmetrical. 
+
+## Task 5
+
+### Summarize quad_lm
+
+```{r}
+summary(quad_lm)
+```
+
+### Estimate values
+
+$\hat{\beta_{0}}$ = 0.860896
+
+$\hat{\beta_{1}}$ = 1.469592
+
+$\hat{\beta_{2}}$ = -0.027457
+
+### Interval estimates
+
+```{r}
+ciReg(quad_lm)
+```
+
+### Equation of fitted line
+
+
+$$ f(x) = 0.860896 + 1.469592x - 0.027457x^2 $$
+
+### Predict height of spruce
+
+diameter = 15, 18, and 20 cm
+
+```{r}
+predict(quad_lm, data.frame(BHDiameter=c(15,18,20)))
+```
+
+### Previous predictions
+
+```{r}
+predict(spruce_lm, data.frame(BHDiameter=c(15, 18, 20)))
+```
+
+```{r}
+with(spruce,
+     plot(Height~BHDiameter, data = spruce, main = "Height vs BHDiameter", ylab = "Height (m)", xlab = "Breast Height Diameter (cm)", pch =21, bg = "blue", cex=1.2, xlim = c(0, max(BHDiameter)*1.1), ylim = c(0, max(Height) * 1.1))
+)
+
+abline(spruce_lm)
+```
+ 
+```{r}
+plot(spruce, main = "Height vs BHDiameter", pch =21, bg = "black")
+
+quadplot = function(x) {
+  quad_lm$coefficients[1] + quad_lm$coefficients[2] * x + quad_lm$coefficients[3] * x ^2
+}
+
+curve(quadplot, lwd = 2, col = "deeppink3", add = TRUE)
+```
+
+By observing the two plots visually, we can see that the straight line is lower than our data points whereas the quadratic line is much closer to the data points on the plots.
+This is represented numerically with the predict function.
+The quadratic fit is more accurate to the data points than the straight line.
+
+### Value of multiple $R^2$
+
+```{r}
+summary(quad_lm)
+```
+
+According to the summary table, multiple $R^2$ = 0.7741
+
+```{r}
+summary(spruce_lm)
+```
+
+Our previous multiple $R^2$ value was 0.6569 
+
+The value of $R^2$ in the current model is greater than the previous one. 
+
+### Adjusted $R^2$
+
+The adjusted $R^2$ value for the quad fit is 0.7604 and 0.6468 for the linear fit. 
+
+### (multiple $R^2$)
+
+### Variability in Height
+
+### anova
+
+```{r}
+anova(spruce_lm)
+anova(quad_lm)
+```
+
+
+### RSS, MSS, TSS, MSS / TSS
+
+```{r}
+RSS=with(spruce, sum((Height-quad_fit)^2))
+RSS
+```
+```{r}
+MSS = with(spruce, sum((quad_fit-mean(Height))^2))
+MSS
+```
+
+```{r}
+TSS = with(spruce, sum((Height-mean(Height))^2))
+TSS
+```
+
+```{r}
+MSS / TSS
+```
+
+
 
 
