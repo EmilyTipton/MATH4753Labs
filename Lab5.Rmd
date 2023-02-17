@@ -16,3 +16,164 @@ output:
 getwd()
 ```
 
+## Task 2
+
+### mybin()
+
+```{r}
+mybin=function(iter=100,n=10, p=0.5)
+  { 
+# make a matrix to hold the samples
+#initially filled with NA's
+sam.mat=matrix(NA,nr=n,nc=iter, byrow=TRUE)
+#Make a vector to hold the number of successes in each trial
+succ=c()
+
+for( i in 1:iter){
+#Fill each column with a new sample
+sam.mat[,i]=sample(c(1,0),n,replace=TRUE, prob=c(p,1-p))
+
+#Calculate a statistic from the sample (this case it is the sum)
+succ[i]=sum(sam.mat[,i])
+}
+
+#Make a table of successes
+succ.tab=table(factor(succ,levels=0:n))
+
+#Make a barplot of the proportions
+barplot(succ.tab/(iter), col=rainbow(n+1), main="Binomial simulation", xlab="Number of successes")
+succ.tab/iter
+}
+```
+
+### iter = 100
+```{r}
+iter100 = mybin(iter=100, n=10, p=0.7)
+```
+
+### iter = 200
+```{r}
+iter200 = mybin(iter=200, n=10, p=0.7)
+```
+
+### iter = 500
+```{r}
+iter500 = mybin(iter=500, n=10, p=0.7)
+```
+
+### iter = 1000
+```{r}
+iter1000 = mybin(iter=1000, n=10, p=0.7)
+```
+
+### iter = 10000
+```{r}
+iter10000 = mybin(iter=10000, n=10, p=0.7)
+```
+
+### iter10000 table
+
+```{r}
+iter10000
+```
+
+### Check with dbinom()
+
+```{r}
+dbin = dbinom(0:10, 10, 0.7)
+names(dbin) = 0:10
+dbin
+```
+
+The values from the table are approximately the same as the values from the dbinom() function. 
+
+## Task 3
+
+### Sample n=5 without replacement
+
+```{r}
+sample(c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0), size = 5, replace = FALSE, prob = NULL)
+```
+
+### Sample with replace
+
+```{r}
+sample(c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0), size = 5, replace = TRUE, prob = NULL)
+```
+
+### myhyper
+
+```{r}
+myhyper=function(iter=100,N=20,r=12,n=5){
+
+  # make a matrix to hold the samples
+#initially filled with NA's
+sam.mat=matrix(NA,nr=n,nc=iter, byrow=TRUE)
+
+#Make a vector to hold the number of successes over the trials
+succ=c()
+for( i in 1:iter){
+
+  #Fill each column with a new sample
+sam.mat[,i]=sample(rep(c(1,0),c(r,N-r)),n,replace=FALSE)
+
+#Calculate a statistic from the sample (this case it is the sum)
+succ[i]=sum(sam.mat[,i])
+}
+
+#Make a table of successes
+succ.tab=table(factor(succ,levels=0:n))
+
+#Make a barplot of the proportions
+barplot(succ.tab/(iter), col=rainbow(n+1), main="HYPERGEOMETRIC simulation", xlab="Number of successes")
+succ.tab/iter
+}
+```
+
+### iter = 100
+
+```{r}
+hyper100 = myhyper(iter = 100, N=20, r=12, n=5)
+```
+
+### iter = 200
+
+```{r}
+hyper200 = myhyper(iter = 200, N=20, r=12, n=5)
+```
+
+### iter = 500
+
+```{r}
+hyper500 = myhyper(iter = 500, N=20, r=12, n=5)
+```
+
+### iter = 1000
+
+```{r}
+hyper1000 = myhyper(iter = 1000, N=20, r=12, n=5)
+```
+
+### iter = 10000
+
+```{r}
+hyper10000 = myhyper(iter = 10000, N=20, r=12, n=5)
+```
+
+### hyper10000 table
+
+```{r}
+hyper10000
+```
+
+### Check with dhyper()
+
+```{r}
+dhyp = dhyper(0:5, m=12, n=8, k=5)
+names(dhyp) = 0:5
+dhyp
+```
+
+The values from the table are approximately the same as the values from the dhyper() function. 
+
+## Task 4

@@ -37,3 +37,32 @@ round(14 / 51, 4)
 round()
 ```
 
+
+
+Binomials 
+
+y~Bin(n=10,p=0.5)
+P(Y = 5)
+P(3 <Y<7)
+P(Y>6)
+P(Y<8)
+
+```{r}
+dbinom(6, 10, 0.5)
+```
+P(3 <Y<7)
+
+```{r}
+pbinom(6, 10, 0.5) - pbinom(3, 10, 0.5)
+```
+P(Y>6)
+```{r}
+pbinom(6, 10, 0.5, lower.tail = FALSE)
+```
+P(Y<8)
+```{r}
+pbinom(7, 10, 0.5, lower.tail = TRUE)
+```
+
+
+
